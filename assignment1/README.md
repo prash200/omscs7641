@@ -12,11 +12,9 @@ Each algorithm will be run for two binary classification datasets so that we can
 - Customer retaintion: https://www.openml.org/d/42178
 
 ## Getting Started & Prerequisites
-`git clone https://github.com/prash200/omscs7641.git
-
-cd assignment1
-
-pip install -r requirements.txt`
+`git clone https://github.com/prash200/omscs7641.git`
+`cd assignment1`
+`pip install -r requirements.txt`
 
 ## Running the Classifiers
 - Best Way: Work with the iPython notebook (main.ipnyb) using Jupyter or a similar environment. This allows you to "Run All" or you can run only the classifiers that you are interested in.
