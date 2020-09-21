@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+import uuid
 
 from collections import Sequence
 from sklearn.pipeline import Pipeline
@@ -64,8 +65,9 @@ def plot(x_axis_values, x_axis_values_order, y_axes_values, title, xlabel, ylabe
                 alpha=0.1,
                 color=y_axis_values["color"])
 
-    plt.legend(bbox_to_anchor=(1.04,1), loc="upper left", prop={"size": 14})
+    legend = plt.legend(bbox_to_anchor=(1.04,1), loc="upper left", prop={"size": 14})
 
+    plt.savefig(str(uuid.uuid1()), bbox_extra_artists=(legend,), bbox_inches='tight')
     plt.show()
 
 def get_model_complexity(model, parameter_complexity_order = "asc", model_name="Insert Model Name"):

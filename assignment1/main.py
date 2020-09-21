@@ -75,25 +75,25 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ### 1.a. Preprocessing
 
-# In[2]:
+# In[63]:
 
 
 df = pd.read_csv("wind.csv", skipinitialspace=True)
 
 
-# In[3]:
+# In[64]:
 
 
 df.isnull().sum()
 
 
-# In[4]:
+# In[65]:
 
 
 df.head()
 
 
-# In[5]:
+# In[66]:
 
 
 X = df.drop(['binaryClass'], axis='columns')
@@ -144,8 +144,8 @@ print_model_evaluation_metrics(decision_tree_evaluation_metrics)
 # In[10]:
 
 
-boosting = fit_model([], GradientBoostingClassifier(n_estimators=2, random_state=42),
-                          {'min_samples_split': range(2, 2000, 20)}, X_train, y_train[0])
+boosting = fit_model([], GradientBoostingClassifier(n_estimators=10, random_state=42),
+                          {'min_samples_split': range(2, 200, 2)}, X_train, y_train[0])
 
 
 # In[11]:
@@ -213,7 +213,7 @@ print_model_evaluation_metrics(polysvc_evaluation_metrics)
 
 # #### 1.b.iv. SVM (Kernel: rbf)
 
-# In[18]:
+# In[67]:
 
 
 rbfsvc = fit_model([], SVC(kernel='rbf', random_state=42),
@@ -229,11 +229,11 @@ plot_model_complexity(rbfsvc_complexity, "^-")
 
 # #### <center>Fig 7. Model Complexity Curves: SVM (Kernel: rbf)</center>
 
-# In[20]:
+# In[68]:
 
 
 rbfsvc_learning_curve = get_learning_curve(rbfsvc, X_train, y_train, "SVM (Kernel: rbf)")
-plot_learning_curve(polysvc_learning_curve, "^-")
+plot_learning_curve(rbfsvc_learning_curve, "^-")
 
 
 # #### <center>Fig 8. Learning Curves: SVM (Kernel: rbf)</center>
@@ -249,14 +249,14 @@ print_model_evaluation_metrics(rbfsvc_evaluation_metrics)
 
 # #### 1.b.v. Neural Network
 
-# In[ ]:
+# In[22]:
 
 
 mlp = fit_model([], MLPClassifier(activation='logistic', learning_rate_init=0.005, max_iter=500, random_state=42),
                 {"hidden_layer_sizes": [(s,) for s in range(1, 21, 1)]}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[23]:
 
 
 mlp_complexity = get_model_complexity(mlp, "asc", "Neural Network")
@@ -265,7 +265,7 @@ plot_model_complexity(mlp_complexity, "P-")
 
 # #### <center>Fig 9. Model Complexity Curves: Neural Network</center>
 
-# In[ ]:
+# In[24]:
 
 
 mlp_learning_curve = get_learning_curve(mlp, X_train, y_train, "Neural Network")
@@ -274,7 +274,7 @@ plot_learning_curve(mlp_learning_curve, "P-")
 
 # #### <center>Fig 10. Learning Curves: Neural Network</center>
 
-# In[ ]:
+# In[25]:
 
 
 mlp_evaluation_metrics = get_model_evaluation_metrics(mlp, X_test, y_test, "Neural Network")
@@ -285,13 +285,13 @@ print_model_evaluation_metrics(mlp_evaluation_metrics)
 
 # #### 1.b.vi. K Nearest Neighbors
 
-# In[ ]:
+# In[26]:
 
 
 knn = fit_model([], KNeighborsClassifier(n_jobs=-1), {'n_neighbors': range(1, 100)}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[27]:
 
 
 knn_complexity = get_model_complexity(knn, "dsec", "K Nearest Neighbors")
@@ -300,7 +300,7 @@ plot_model_complexity(knn_complexity, "v-")
 
 # #### <center>Fig 11. Model Complexity Curves: K Nearest Neighbors</center>
 
-# In[ ]:
+# In[28]:
 
 
 knn_learning_curve = get_learning_curve(knn, X_train, y_train, "K Nearest Neighbors")
@@ -311,7 +311,7 @@ plot_learning_curve(knn_learning_curve, "v-")
 
 # #### Note: Cross-validation time is more than training time for KNN, which is atypical of any other algorithm we studied here.
 
-# In[ ]:
+# In[29]:
 
 
 knn_evaluation_metrics = get_model_evaluation_metrics(knn, X_test, y_test, "K Nearest Neighbors")
@@ -322,7 +322,7 @@ print_model_evaluation_metrics(knn_evaluation_metrics)
 
 # ### 1.c. Model Comparisions
 
-# In[ ]:
+# In[30]:
 
 
 plot_learning_curve_comparision([decision_tree_learning_curve,
@@ -335,7 +335,7 @@ plot_learning_curve_comparision([decision_tree_learning_curve,
 
 # #### <center>Fig 13. Model Comparisions</center>
 
-# In[ ]:
+# In[31]:
 
 
 print_model_evaluation_metrics_comparision([decision_tree_evaluation_metrics,
@@ -352,19 +352,19 @@ print_model_evaluation_metrics_comparision([decision_tree_evaluation_metrics,
 
 # ### 2.a. Data load and preprocessing
 
-# In[ ]:
+# In[32]:
 
 
 df = pd.read_csv("customer.csv", skipinitialspace=True)
 
 
-# In[ ]:
+# In[33]:
 
 
 df.isnull().sum()
 
 
-# In[ ]:
+# In[34]:
 
 
 df = df.dropna()
@@ -373,7 +373,7 @@ df.head()
 
 # #### Note: Since there are only 11 rows that has null values, they are dropped to handle missing values.
 
-# In[ ]:
+# In[35]:
 
 
 X = df.drop(['customerID', "Churn"], axis='columns')
@@ -385,14 +385,14 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 # #### 2.b.i. Decision Tree
 
-# In[ ]:
+# In[36]:
 
 
 decision_tree = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], DecisionTreeClassifier(random_state=42),
                           {'min_samples_split': range(2, 2000, 20)}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[37]:
 
 
 decision_tree_complexity = get_model_complexity(decision_tree, "dsec", "Decision Tree")
@@ -401,7 +401,7 @@ plot_model_complexity(decision_tree_complexity, "o-")
 
 # #### <center>Fig 14. Model Complexity Curves: Decision Tree</center>
 
-# In[ ]:
+# In[38]:
 
 
 decision_tree_learning_curve = get_learning_curve(decision_tree, X_train, y_train, "Decision Tree")
@@ -410,7 +410,7 @@ plot_learning_curve(decision_tree_learning_curve, "o-")
 
 # #### <center>Fig 15. Learning Curves: Decision Tree</center>
 
-# In[ ]:
+# In[39]:
 
 
 decision_tree_evaluation_metrics = get_model_evaluation_metrics(decision_tree, X_test, y_test, "Decision Tree")
@@ -421,14 +421,14 @@ print_model_evaluation_metrics(decision_tree_evaluation_metrics)
 
 # #### 2.b.ii. Boosting
 
-# In[ ]:
+# In[40]:
 
 
-boosting = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], GradientBoostingClassifier(n_estimators=40, random_state=42),
+boosting = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], GradientBoostingClassifier(n_estimators=10, random_state=42),
                           {'min_samples_split': range(2, 200, 2)}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[41]:
 
 
 boosting_complexity = get_model_complexity(boosting, "dsec", "Boosting")
@@ -437,7 +437,7 @@ plot_model_complexity(boosting_complexity, "s-")
 
 # #### <center>Fig 16. Model Complexity Curves: Boosting</center>
 
-# In[ ]:
+# In[42]:
 
 
 boosting_learning_curve = get_learning_curve(boosting, X_train, y_train, "Boosting")
@@ -446,7 +446,7 @@ plot_learning_curve(boosting_learning_curve, "s-")
 
 # #### <center>Fig 17. Learning Curves: Boosting</center>
 
-# In[ ]:
+# In[43]:
 
 
 boosting_evaluation_metrics = get_model_evaluation_metrics(boosting, X_test, y_test, "Boosting")
@@ -457,14 +457,14 @@ print_model_evaluation_metrics(boosting_evaluation_metrics)
 
 # #### 2.b.iii. SVM (Kernel: poly)
 
-# In[ ]:
+# In[44]:
 
 
 polysvc = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], SVC(kernel='poly', degree=5, random_state=42),
                 {'C': np.linspace(0.0005, 5.0, 500)}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[45]:
 
 
 polysvc_complexity = get_model_complexity(polysvc, "asc", "SVM (Kernel: poly)")
@@ -473,7 +473,7 @@ plot_model_complexity(polysvc_complexity, "D-")
 
 # #### <center>Fig 18. Model Complexity Curves: SVM (Kernel: poly)</center>
 
-# In[ ]:
+# In[46]:
 
 
 polysvc_learning_curve = get_learning_curve(polysvc, X_train, y_train, "SVM (Kernel: poly)")
@@ -482,7 +482,7 @@ plot_learning_curve(polysvc_learning_curve, "D-")
 
 # #### <center>Fig 19. Learning Curves: SVM (Kernel: poly)</center>
 
-# In[ ]:
+# In[47]:
 
 
 polysvc_evaluation_metrics = get_model_evaluation_metrics(polysvc, X_test, y_test, "SVM (Kernel: poly)")
@@ -493,14 +493,14 @@ print_model_evaluation_metrics(polysvc_evaluation_metrics)
 
 # #### 2.b.iv. SVM (Kernel: rbf)
 
-# In[ ]:
+# In[48]:
 
 
 rbfsvc = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], SVC(kernel='rbf', random_state=42),
                 {'C': np.linspace(0.0005, 5.0, 500)}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[49]:
 
 
 rbfsvc_complexity = get_model_complexity(rbfsvc, "asc", "SVM (Kernel: rbf)")
@@ -509,16 +509,16 @@ plot_model_complexity(rbfsvc_complexity, "^-")
 
 # #### <center>Fig 20. Model Complexity Curves: SVM (Kernel: rbf)</center>
 
-# In[ ]:
+# In[62]:
 
 
 rbfsvc_learning_curve = get_learning_curve(rbfsvc, X_train, y_train, "SVM (Kernel: rbf)")
-plot_learning_curve(polysvc_learning_curve, "^-")
+plot_learning_curve(rbfsvc_learning_curve, "^-")
 
 
 # #### <center>Fig 21. Learning Curves: SVM (Kernel: rbf)</center>
 
-# In[ ]:
+# In[51]:
 
 
 rbfsvc_evaluation_metrics = get_model_evaluation_metrics(rbfsvc, X_test, y_test, "SVM (Kernel: rbf)")
@@ -529,14 +529,14 @@ print_model_evaluation_metrics(rbfsvc_evaluation_metrics)
 
 # #### 2.b.v. Neural Network
 
-# In[ ]:
+# In[52]:
 
 
 mlp = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], MLPClassifier(activation='logistic', learning_rate_init=0.002, max_iter=500, random_state=42),
                 {"hidden_layer_sizes": [(s,) for s in range(1, 21, 1)]}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[53]:
 
 
 mlp_complexity = get_model_complexity(mlp, "asc", "Neural Network")
@@ -545,7 +545,7 @@ plot_model_complexity(mlp_complexity, "P-")
 
 # #### <center>Fig 22. Model Complexity Curves: Neural Network</center>
 
-# In[ ]:
+# In[54]:
 
 
 mlp_learning_curve = get_learning_curve(mlp, X_train, y_train, "Neural Network")
@@ -554,7 +554,7 @@ plot_learning_curve(mlp_learning_curve, "P-")
 
 # #### <center>Fig 23. Learning Curves: Neural Network</center>
 
-# In[ ]:
+# In[55]:
 
 
 mlp_evaluation_metrics = get_model_evaluation_metrics(mlp, X_test, y_test, "Neural Network")
@@ -565,14 +565,14 @@ print_model_evaluation_metrics(mlp_evaluation_metrics)
 
 # #### 2.b.vi. K Nearest Neighbors
 
-# In[ ]:
+# In[56]:
 
 
 knn = fit_model(['gender', 'Partner', 'Dependents', 'PhoneService', 'MultipleLines', 'InternetService', 'OnlineSecurity', 'OnlineBackup', 'DeviceProtection', 'TechSupport', 'StreamingTV', 'StreamingMovies', 'Contract', 'PaperlessBilling', 'PaymentMethod'], KNeighborsClassifier(n_jobs=-1),
                 {'n_neighbors': range(1, 140)}, X_train, y_train[0])
 
 
-# In[ ]:
+# In[57]:
 
 
 knn_complexity = get_model_complexity(knn, "dsec", "K Nearest Neighbors")
@@ -581,7 +581,7 @@ plot_model_complexity(knn_complexity, "v-")
 
 # #### <center>Fig 24. Model Complexity Curves: K Nearest Neighbors</center>
 
-# In[ ]:
+# In[58]:
 
 
 knn_learning_curve = get_learning_curve(knn, X_train, y_train, "K Nearest Neighbors")
@@ -592,7 +592,7 @@ plot_learning_curve(knn_learning_curve, "v-")
 
 # #### Note: Cross-validation time is more than training time for KNN, which is atypical of any other algorithm we studied here.
 
-# In[ ]:
+# In[59]:
 
 
 knn_evaluation_metrics = get_model_evaluation_metrics(knn, X_test, y_test, "K Nearest Neighbors")
@@ -603,7 +603,7 @@ print_model_evaluation_metrics(knn_evaluation_metrics)
 
 # ### 2.c. Model Comparisions
 
-# In[ ]:
+# In[60]:
 
 
 plot_learning_curve_comparision([decision_tree_learning_curve,
@@ -616,7 +616,7 @@ plot_learning_curve_comparision([decision_tree_learning_curve,
 
 # #### <center>Fig 26. Model Comparisions</center>
 
-# In[ ]:
+# In[61]:
 
 
 print_model_evaluation_metrics_comparision([decision_tree_evaluation_metrics,
