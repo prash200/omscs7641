@@ -13,7 +13,9 @@ Each algorithm will be run for two binary classification datasets so that we can
 
 ## Getting Started & Prerequisites
 `git clone https://github.com/prash200/omscs7641.git
+
 cd assignment1
+
 pip install -r requirements.txt`
 
 ## Running the Classifiers
