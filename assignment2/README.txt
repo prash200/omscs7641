@@ -13,6 +13,7 @@ These algorithms will be applied to 3 discrete optimization problem domains:
 
 Finally, these algorithms (except MIMIC) are also applied to 1 continuous optimization problem domain:
 - Neural Network Weights Optimization Problem (NNWOP)
+
 to solve the wind speed classification problem mentioned here:
 - Wind speed dataset: https://www.openml.org/d/847
 
